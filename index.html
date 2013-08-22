@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <table cellpadding="10">
+            <tr>
+                <td>This is a picture of Frank Zappa saved as GIF with interlacing:</td>
+                <td>This is how lines are actually stored inside GIF:</td>
+            </tr>
+            <tr>
+                <td><img src="Zappa-interlaced.gif" /></td>
+                <td><img src="Zappa-gifinterlaced.png" /></td>
+            </tr>
+
+        </table>
+        
+        <xmp>
+int encode_line_number (int line_number, int height) 
+{
+    if ((line_number + 1) % 2 == 0) // 4th tile 1/2 sized
+        return (height + line_number) / 2;
+    if ((line_number + 2) % 4 == 0) // 3rd tile 1/4 sized
+        return (height + line_number + 1) / 4;
+    if ((line_number + 4) % 8 == 0) // 2nd tile 1/8 sized
+        return (height + line_number + 3) / 8;
+
+    // line_number % 8 == 0  (1st tile 1/8 sized)
+    return line_number / 8;
+}
+
+int decode_line_number (int line_number, int height) 
+{
+    if (1 < height && (height + 1) / 2 <= line_number) // 4th tile 1/2 sized
+        return 2 * (line_number - (height + 1) / 2) + 1;
+    if (2 < height && (height + 3) / 4 <= line_number) // 3rd tile 1/4 sized
+        return 4 * (line_number - (height + 3) / 4) + 2;
+    if (4 < height && (height + 7) / 8 <= line_number) // 2nd tile 1/8 sized
+        return 8 * (line_number - (height + 7) / 8) + 4;
+
+    // 1st tile 1/8 sized
+    return line_number * 8;
+}
+
+
+        </xmp>
+        Source and tests: <a href="test.cpp">test.cpp</a><br /><br />
+        Image source: <br />
+        <a href="https://en.wikipedia.org/wiki/File:Zappa_16011977_01_300.jpg">https://en.wikipedia.org/wiki/File:Zappa_16011977_01_300.jpg</a><br /><br />
+        More info: 
+        <ul>
+            <li><a href="https://en.wikipedia.org/wiki/Graphics_Interchange_Format#Interlacing">https://en.wikipedia.org/wiki/Graphics_Interchange_Format#Interlacing</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Interlacing_%28bitmaps%29">https://en.wikipedia.org/wiki/Interlacing_%28bitmaps%29</a></li>
+            <li><a href="http://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art011">http://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art011</a></li>
+        </ul>
+    </body>
+</html>
